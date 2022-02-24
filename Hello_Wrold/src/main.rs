@@ -12,7 +12,7 @@ fn main() {
     */
 
     // Doc comments which are parsed into HTML library documentation:
-    /// Generate libraries docs for the following documentation
+    // Generate libraries docs for the following documentation
     // //! Generate libraries docs for the enclosing item.
 
     // This is an example of a line comment
@@ -72,11 +72,66 @@ fn main() {
     // FIXME ^ Add the missing argument: "James"
 
     // Create a structure named `Structure` which contains an `i32`.
-    // #[allow(dead_code)]
-    // struct Structure(i32);
+    #[derive(Debug)] // here derive is an attribute
+    struct Structure(i32);
 
+    #[derive(Debug)]
+    struct Deep(Structure);
     // However, custom types such as this structure require more complicated
     // handling. This will not work.
-    // println!("This struct `{:?}` won't print...", Structure(3));
+    println!("This struct `{:?}` can be printed now", Deep(Structure(10)));
     // FIXME ^ Comment out this line.
+
+    #[derive(Debug)]
+    struct Person<'a> {
+        name: &'a str,
+        age: i8
+    }
+
+    let fahim: Person = Person { name: "fahim faisal", age: 23 };
+
+    println!("{} {}", fahim.name, fahim.age);
+
+    // A unit struct
+    struct Unit;
+    
+    // A tuple struct
+    struct Pair(i32, f32);
+
+    // A struct with two fields
+    #[derive(Debug)]
+    struct Point {
+        x: f32,
+        y: f32,
+    }
+
+    #[allow(dead_code)]
+    struct Rectangle {
+        // A rectangle can be specified by where the top left and bottom right
+        // corners are in space.
+        top_left: Point,
+        bottom_right: Point,
+    }
+
+    // Instantiate a Point
+    let point: Point = Point { x: 10.98, y: 5.4 };
+
+    let top_left = Point { y: 3.4, ..point };
+    let bottom_right = Point { x: 11.20, ..point };
+
+    let rect = Rectangle { top_left, bottom_right };
+    
+    //* Rust also provides "pretty printing" with {:#?}
+    println!("{:#?}", rect.top_left);
+    println!("{:#?}", rect.bottom_right);
+
+    // destructuring form struct
+    let Point { x: left_angle, y: right_angle }  = point;
+
+    println!("x: {} y: {}", left_angle, right_angle);
+
+    // instance of Pair
+    let pair = Pair(100, 10_000.01);
+
+    println!("first: {:b} second: {}", pair.0, pair.1);
 }
